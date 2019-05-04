@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ITMD-465 Lab 4 - Canvas Drawing</title>
+	<style type="text/css">
+	#content-wrapper {
+		width: 600px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	#canvasRun {
+		background-color: #c00;
+		border: 0;
+		color: #fff;
+	}
+	</style>
+</head>
+<body>
+	<div id="content-wrapper">
+		<button id="canvasRun">Draw Canvas</button><br><br>
+		<canvas id="myCanvas" width="600" height="450"></canvas>
+	</div>
+	<script type="text/javascript">
+	// Canvas Drawing Code Here
+	//get draw button
+	let button = document.getElementById("canvasRun");
+
+	//make onclick funciton
+	button.addEventListener("click", function(){
+		// get canvas area
+		var canvas = document.getElementById('myCanvas');
+		if (canvas.getContext){
+			//make canvas 2d
+			var ctx = canvas.getContext('2d');
+
+			//background rectangle
+			//make gradient
+			var gradient = ctx.createLinearGradient(0, 0, 0, 450);
+			//add black and white colors
+			gradient.addColorStop(0, "white");
+			gradient.addColorStop(1, "black");
+			//add gradient
+			ctx.fillStyle = gradient;
+			ctx.fillRect(0, 0, 600, 450);
+
+			//line under title
+			//reset lines to be solid
+			ctx.setLineDash([0, 0]);
+			ctx.fillStyle = '#C80000'; //red
+			ctx.strokeStyle = '#C80000'; //red
+			//make lines
+			ctx.beginPath();
+			// moves "pen" to location
+			ctx.moveTo(30, 60);
+			ctx.lineTo(570, 60);
+			//make thicker
+			ctx.lineWidth = 3;
+			//make line appear
+			ctx.stroke();
+
+			//title
+			ctx.font = '32px sans-serif';
+			ctx.textAlign = "center";
+			ctx.fillText("ITMD 465 Canvas Lab", canvas.width/2, 50);
+
+			//triangle
+			ctx.fillStyle = '#00C800'; 	//green
+			//set starting point
+			ctx.beginPath();
+			ctx.moveTo(60,350); //move "pen"
+			ctx.lineTo(180,350);
+			ctx.lineTo(120, 250);
+			ctx.closePath(); //auto complete path
+			ctx.fill(); //add color
+
+			// circle
+			ctx.fillStyle = '#0000C8'; //blue
+			ctx.strokeStyle = 'white';
+			ctx.beginPath(); //set starting point
+			ctx.arc(120, 150, 60, 0, Math.PI * 2, true);
+			//(start x, start y, radius, start angle(radians), end angle, counterclockwise)
+			ctx.fill(); // add color
+			ctx.stroke(); //add outline
+
+			// arc
+			ctx.strokeStyle = '#FFA500'; // orange
+			ctx.lineWidth = 15; //make it thicker
+			ctx.beginPath(); //starting point
+			ctx.arc(270, 160, 70, .2 * Math.PI, 1.5 * Math.PI, true);
+			//(start x, start y, radius, start angle(radians), end angle, counterclockwise)
+			// https://www.w3schools.com/tags/canvas_arc.asp
+			ctx.stroke(); //add outline
+
+			// square
+			ctx.lineWidth = 6; // make outline thicker
+			ctx.fillStyle = '#C80000'; //red
+			ctx.strokeStyle = 'white';
+			ctx.fillRect(420, 90, 125, 125); //make square
+			ctx.strokeRect(420, 90, 125, 125); //make outline
+
+			// square behind curvey line
+			ctx.fillStyle = 'white';
+			ctx.fillRect(270, 245, 275, 100); //make square
+
+			//curvey line part 1
+			ctx.lineWidth = 2; //make thin
+			ctx.strokeStyle = 'black';
+			ctx.setLineDash([7, 5]); //make dashs, (thickens, spacing)
+			ctx.beginPath(); //start point
+			ctx.moveTo(300, 300); //move "pen"
+			ctx.quadraticCurveTo(370, 250, 410, 300);
+			// (control point x, control y, end point x, end y)
+			ctx.stroke(); //fill line
+			//curvey line part 2
+			ctx.beginPath(); // start point
+			ctx.moveTo(410, 300); //move "pen"
+			ctx.quadraticCurveTo(470, 350, 530, 300);
+			// (control point x, control y, end point x, end y)
+			ctx.stroke();// fill line
+
+			//name and email
+			ctx.fillStyle = 'white';
+			ctx.font = '14px sans-serif';
+			ctx.textAlign = "left";
+			ctx.fillText("Erin Baxter", 20, 410);
+			ctx.fillText("ebaxter1@hawk.iit.edu", 20, 430);
+
+			//image
+			var img = new Image();   // Create new img element
+			//function to start when image is loaded on page
+			img.addEventListener("load", function() {
+				//make image with new size
+				ctx.drawImage(img, 305, 370, 240,60);
+				//(image, top-left corner x place, top-left corner x place, width, height);
+			}, false);
+			img.src = 'IIT_SAT_stack_186_white.png'; // image path
+
+		}
+
+	});
+	</script>
+</body>
+</html>

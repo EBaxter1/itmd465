@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>ITMD 465 - Lab 4 - ebaxter1</title>
+  <style type="text/css">
+    body {
+      padding-top: 20px;
+      background-color: #252525;
+      color: white
+    }
+
+    th {
+      background-color: green
+    }
+
+    #lBtn {
+      margin-right: 40px
+    }
+  </style>
+</head>
+<body>
+  <div class="text-center">
+    <h1>ITMD 465 - Lab 4</h1>
+    <h2>Erin Baxter - ebaxter1@hawk.iit.edu</h2>
+    <br>
+    <button type="button" class="btn btn-info btn-lg" id="lBtn">Load Data</button>
+    <button type="button" class="btn btn-danger btn-lg" id="rBtn">Reset</button>
+    <br>
+    <br>
+    <h2>Employee List</h2>
+    <div id="result">
+
+    </div>
+  </div>
+  <script type="text/javascript">
+    //disable button
+    document.getElementById("rBtn").disabled = true;
+
+    //create new table
+    let newTable = document.createElement("table");
+    newTable.id = "createdTable";
+    newTable.className = "table table-striped table-dark table-bordered table-sm";
+    //create header row
+    let hArray = ["ID", "First Name", "Last Name", "Title", "Email", "Gender", "Active"];
+    let hRow = document.createElement('tr');
+    for(let i = 0; i < hArray.length; i++) {
+      let header = document.createElement("th");
+      header.setAttribute("scope", "col");
+      let hData = document.createTextNode(hArray[i]);
+      header.appendChild(hData);
+      hRow.appendChild(header);
+    }
+
+    let cellBody = document.createElement("tbody");
+    newTable.appendChild(hRow);
+    newTable.appendChild(cellBody)
+    document.getElementById('result').appendChild(newTable);
+
+    //click function that loads data into table
+    document.getElementById("lBtn").addEventListener("click", function() {
+      //make sure table body is clear
+      cellBody.innerHTML = "";
+      document.getElementById("rBtn").disabled = false;
+
+      //get data from server
+      fetch("http://libertyville.rice.iit.edu/scripts/4565_lab4.php").then(function(response) {
+        return response.json();
+      }).then(function(newJson){
+        //console.log(newJson);
+        //load data into new rows
+        for(var i = 0; i < newJson.length; i++) {
+          console.log(newJson[i]);
+          var row = document.createElement('tr');
+          var idCell = document.createElement('td');
+          var idText = document.createTextNode(newJson[i].id);
+          idCell.appendChild(idText);
+          row.appendChild(idCell);
+          var fnameCell = document.createElement('td');
+          var fnameText = document.createTextNode(newJson[i].first_name);
+          fnameCell.appendChild(fnameText);
+          row.appendChild(fnameCell);
+          var lnameCell = document.createElement('td');
+          var lnameText = document.createTextNode(newJson[i].last_name);
+          lnameCell.appendChild(lnameText);
+          row.appendChild(lnameCell);
+          var titleCell = document.createElement('td');
+          var titleText = document.createTextNode(newJson[i].title);
+          titleCell.appendChild(titleText);
+          row.appendChild(titleCell);
+          var emailCell = document.createElement('td');
+          var emailText = document.createTextNode(newJson[i].email);
+          emailCell.appendChild(emailText);
+          row.appendChild(emailCell);
+          var genderCell = document.createElement('td');
+          var genderText = document.createTextNode(newJson[i].gender);
+          genderCell.appendChild(genderText);
+          row.appendChild(genderCell);
+          var activeCell = document.createElement('td');
+          var activeText = document.createTextNode(newJson[i].active);
+          activeCell.appendChild(activeText);
+          row.appendChild(activeCell);
+          cellBody.appendChild(row)
+        }
+        newTable.appendChild(cellBody);
+        document.getElementById('result').appendChild(newTable);
+      });
+      document.getElementById("lBtn").disabled = true;
+    });
+
+    //function to clear out table
+    document.getElementById("rBtn").addEventListener("click", function(){
+      cellBody.innerHTML = "";
+      newTable.appendChild(hRow);
+      document.getElementById("rBtn").disabled = true;
+      document.getElementById("lBtn").disabled = false;
+    }, false);
+
+  </script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
